@@ -1,5 +1,6 @@
 package com.mheleon.mycapmquiz;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -64,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
     @OnClick(R.id.startButton)
     public void startQuiz() {
         Toast.makeText(this, "Starting...", Toast.LENGTH_SHORT).show();
-        
+        Intent intent = new Intent(MainActivity.this, AllQuestionsActivity.class);
+        startActivity(intent);
     }
 }
