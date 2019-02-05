@@ -12,11 +12,16 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
+
+    int nbQuestions = 10;
 
     @BindView(R.id.startButton) Button startButton;
 
@@ -65,7 +70,29 @@ public class MainActivity extends AppCompatActivity {
     @OnClick(R.id.startButton)
     public void startQuiz() {
         Toast.makeText(this, "Starting...", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(MainActivity.this, AllQuestionsActivity.class);
+        // Intent intent = new Intent(MainActivity.this, AllQuestionsActivity.class);
+        Intent intent = new Intent(MainActivity.this, QuestionActivity.class);
+        intent.putExtra("questionNumber", 1);
+
+        ArrayList<String> userAnswers = new ArrayList<>(nbQuestions);
+        intent.putStringArrayListExtra("array", userAnswers);
+
+        intent.putIntegerArrayListExtra("questionsIndex", getRandomQuestions(nbQuestions));
         startActivity(intent);
+    }
+
+    /**
+     * Method to get list of index random questions
+     *
+     * @param nbQuestions
+     * @return Index list of questions
+     */
+    private ArrayList<Integer> getRandomQuestions(int nbQuestions) {
+        ArrayList<Integer> questionsIndex = new ArrayList<>(nbQuestions);
+        for(int i = 0; i < nbQuestions; i++) {
+            // questionsIndex.add(response.body().get((int) ((Math.random() * response.body().size()) - 1)));
+            questionsIndex.add((int) (Math.random() * 21) - 1);
+        }
+        return questionsIndex;
     }
 }
