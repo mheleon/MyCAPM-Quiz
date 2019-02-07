@@ -123,7 +123,9 @@ public class QuestionActivity extends AppCompatActivity {
             buttonSelected = "D";
             userAnswers.set(questionNumber - 1, "d");
         }else {
-            buttonSelected = "N/A";
+            // buttonSelected = "Answer the question before continue";
+            Toast.makeText(getApplicationContext(), "Answer the question before continue", Toast.LENGTH_SHORT).show();
+            return;
         }
 
         // Toast.makeText(getApplicationContext(), "Answer :  " + buttonSelected, Toast.LENGTH_SHORT).show();
@@ -139,10 +141,15 @@ public class QuestionActivity extends AppCompatActivity {
 
         } else {
             Log.d("nbPregunta1-10", Integer.toString(questionNumber));
-            Toast.makeText(getApplicationContext(), "Mostrar resultado final!", Toast.LENGTH_SHORT).show();
-        }
+            Toast.makeText(getApplicationContext(), "Result...", Toast.LENGTH_SHORT).show();
 
-        // startActivity(intent);
+            Intent intent = new Intent(QuestionActivity.this, ResultsActivity.class);
+
+            intent.putExtra("questionNumber", questionNumber + 1);
+            intent.putStringArrayListExtra("userAnswers", userAnswers);
+            intent.putIntegerArrayListExtra("questionsIndex", questionsIndex);
+            startActivity(intent);
+        }
     }
 
 }
