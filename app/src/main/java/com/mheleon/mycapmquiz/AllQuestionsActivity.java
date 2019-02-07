@@ -73,7 +73,7 @@ public class AllQuestionsActivity extends AppCompatActivity {
         // list = findViewById(R.id.list);
         // list.setAdapter(arrayAdapter);
 
-        getQuestionAnswers();
+        // getQuestionAnswers();
 
 
 
@@ -81,7 +81,7 @@ public class AllQuestionsActivity extends AppCompatActivity {
 
     /**
      * Method to get questions and answers from api
-     */
+     *//**
     private void getQuestionAnswers() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://bridge.buddyweb.fr")
@@ -113,6 +113,6 @@ public class AllQuestionsActivity extends AppCompatActivity {
             }
         });
 
-    }
+    }*/
 
 }

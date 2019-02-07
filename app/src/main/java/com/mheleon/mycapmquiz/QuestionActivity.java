@@ -20,6 +20,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
+import io.realm.Realm;
 
 public class QuestionActivity extends AppCompatActivity {
 
@@ -40,8 +41,8 @@ public class QuestionActivity extends AppCompatActivity {
     private RadioButton bD = findViewById(R.id.radioButtonD);
     */
 
-    int questionNumber;
-    ArrayList<String> userAnswers;
+    int questionNumber; // Corresponde al numero de la pregunta, no al index del arreglo
+    ArrayList<String> userAnswers = new ArrayList<>();
     ArrayList<Integer> questionsIndex;
 
     @Override
@@ -62,7 +63,6 @@ public class QuestionActivity extends AppCompatActivity {
             }
         });
 
-        setFields();
         radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
 
         Intent i = getIntent();
@@ -73,14 +73,30 @@ public class QuestionActivity extends AppCompatActivity {
 
         // Get user's answers from last activity
         userAnswers = i.getStringArrayListExtra("userAnswers");
+        // Log.d("size user -- answer", Integer.toString(userAnswers.size()));
+        Log.d("currentQuest", Integer.toString(questionNumber));
+
+        setTitle("Question " + questionNumber);
+        setFields();
     }
 
     public void setFields() {
-        questionText.setText("Texto de pregunta");
-        radioButtonA.setText("A. Respuesta A");
-        radioButtonB.setText("B. Respuesta B");
-        radioButtonC.setText("C. Respuesta C");
-        radioButtonD.setText("D. Respuesta D");
+
+        Log.d("nbQuestion real", Integer.toString(questionsIndex.get(questionNumber - 1)));
+        Realm realm = Realm.getDefaultInstance();
+        CapmQA capmQA = realm.where(CapmQA.class).equalTo("id", questionsIndex.get(questionNumber - 1)).findFirst();
+        // int nbQuestionsDB = realm.where(CapmQA.class).findAll().size();
+        // Log.d("size", Integer.toString(nbQuestionsDB));
+
+
+        questionText.setText(capmQA.getQuestion());
+        radioButtonA.setText("A. " + capmQA.getA());
+        radioButtonB.setText("B. " + capmQA.getB());
+        radioButtonC.setText("C. " + capmQA.getC());
+        radioButtonD.setText("D. " + capmQA.getD());
+
+        realm.close();
+
     }
 
     @OnClick(R.id.nextButton)
@@ -91,28 +107,42 @@ public class QuestionActivity extends AppCompatActivity {
 
         String buttonSelected;
 
+        Log.d("questionNumber", Integer.toString(questionNumber));
+
         // find which radioButton is checked by id
         if (selectedId == R.id.radioButtonA) {
             buttonSelected = "A";
+            userAnswers.set(questionNumber -1 , "a");
         } else if (selectedId == R.id.radioButtonB) {
             buttonSelected = "B";
+            userAnswers.set(questionNumber - 1, "b");
         } else if (selectedId == R.id.radioButtonC) {
             buttonSelected = "C";
+            userAnswers.set(questionNumber - 1, "c");
         } else if (selectedId == R.id.radioButtonD) {
             buttonSelected = "D";
+            userAnswers.set(questionNumber - 1, "d");
         }else {
             buttonSelected = "N/A";
         }
 
-        Toast.makeText(getApplicationContext(), "Answer :  " + buttonSelected, Toast.LENGTH_SHORT).show();
+        // Toast.makeText(getApplicationContext(), "Answer :  " + buttonSelected, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Answer :  " + userAnswers.get(questionNumber -1), Toast.LENGTH_SHORT).show();
 
-        Intent intent = new Intent(QuestionActivity.this, QuestionActivity.class);
+        if (questionNumber < 10) {
+            Intent intent = new Intent(QuestionActivity.this, QuestionActivity.class);
 
-        intent.putExtra("questionNumber", questionNumber + 1);
-        intent.putStringArrayListExtra("array", userAnswers);
-        intent.putIntegerArrayListExtra("questionsIndex", questionsIndex);
+            intent.putExtra("questionNumber", questionNumber + 1);
+            intent.putStringArrayListExtra("userAnswers", userAnswers);
+            intent.putIntegerArrayListExtra("questionsIndex", questionsIndex);
+            startActivity(intent);
 
-        startActivity(intent);
+        } else {
+            Log.d("nbPregunta1-10", Integer.toString(questionNumber));
+            Toast.makeText(getApplicationContext(), "Mostrar resultado final!", Toast.LENGTH_SHORT).show();
+        }
+
+        // startActivity(intent);
     }
 
 }

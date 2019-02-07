@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -13,15 +14,24 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.realm.Realm;
+import io.realm.RealmList;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
 
     int nbQuestions = 10;
+    RealmList<CapmQA> resource = new RealmList<>();
 
     @BindView(R.id.startButton) Button startButton;
 
@@ -43,6 +53,13 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        Realm.init(getApplicationContext());
+
+        // TODO check if db is updated
+        getApiToDB();
+
+        // getRandomQuestions(10);
     }
 
     @Override
@@ -67,6 +84,9 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * Method to manage start button
+     */
     @OnClick(R.id.startButton)
     public void startQuiz() {
         Toast.makeText(this, "Starting...", Toast.LENGTH_SHORT).show();
@@ -74,8 +94,9 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(MainActivity.this, QuestionActivity.class);
         intent.putExtra("questionNumber", 1);
 
-        ArrayList<String> userAnswers = new ArrayList<>(nbQuestions);
-        intent.putStringArrayListExtra("array", userAnswers);
+        ArrayList<String> userAnswers = new ArrayList<>();
+        for(int i = 0; i < nbQuestions; i ++ ) userAnswers.add("x");
+        intent.putStringArrayListExtra("userAnswers", userAnswers);
 
         intent.putIntegerArrayListExtra("questionsIndex", getRandomQuestions(nbQuestions));
         startActivity(intent);
@@ -89,10 +110,113 @@ public class MainActivity extends AppCompatActivity {
      */
     private ArrayList<Integer> getRandomQuestions(int nbQuestions) {
         ArrayList<Integer> questionsIndex = new ArrayList<>(nbQuestions);
+
+        Realm realm = Realm.getDefaultInstance();
+        int nbQuestionsDB = realm.where(CapmQA.class).findAll().size();
+        Log.d("size", Integer.toString(nbQuestionsDB));
         for(int i = 0; i < nbQuestions; i++) {
             // questionsIndex.add(response.body().get((int) ((Math.random() * response.body().size()) - 1)));
-            questionsIndex.add((int) (Math.random() * 21) - 1);
+            // nbQuestionsDB is the maximum and the 1 is the minimum.
+            int rand = (int) (Math.random() * nbQuestionsDB + 1);
+            Log.d("rand", Integer.toString(rand));
+            questionsIndex.add(rand);
         }
         return questionsIndex;
+    }
+
+    private void testDB() {
+
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        realm.delete(CapmQA.class);
+        realm.commitTransaction();
+
+        // realm.deleteAll();
+
+// All writes are wrapped in a transaction
+// to facilitate safe multi threading
+
+        realm.beginTransaction();
+        try {
+
+            CapmQA capmQA = realm.createObject(CapmQA.class, 1);
+            capmQA.setId_chapter(1);
+            capmQA.setQuestion("primera pregunta");
+            capmQA.setA("preguta a");
+            capmQA.setB("preguta a");
+            capmQA.setC("preguta a");
+            capmQA.setD("preguta a");
+            capmQA.setAnswer("b");
+
+            // final CapmQA managedDog = realm.copyToRealm(capmQA);
+            // Add a question
+            realm.commitTransaction();
+        } catch (Throwable e) {
+            if (realm.isInTransaction()) {
+                realm.cancelTransaction();
+            }
+            throw e;
+        }
+
+        CapmQA capmQA2 = realm.where(CapmQA.class).equalTo("id", 1).findFirst();
+        Log.d("dataB", capmQA2.getQuestion());
+
+    }
+
+    /**
+     * Method to get Questions from API and add them to DB
+     */
+    public void getApiToDB() {
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        realm.delete(CapmQA.class);
+        realm.commitTransaction();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://bridge.buddyweb.fr")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        CapmQAService capmQAService = retrofit.create(CapmQAService.class);
+        Call<RealmList<CapmQA>> call = capmQAService.getCapmQA();
+
+        call.enqueue(new Callback<RealmList<CapmQA>>() {
+            @Override
+            public void onResponse(Call<RealmList<CapmQA>> call, Response<RealmList<CapmQA>> response) {
+
+                resource = response.body();
+                Realm realm = Realm.getDefaultInstance();
+                try {
+                    // add response to realm database
+                    realm.beginTransaction();
+                    realm.copyToRealmOrUpdate(resource);
+                    realm.commitTransaction();
+                    realm.close();
+                } catch (Throwable e) {
+                    if (realm.isInTransaction()) {
+                        realm.cancelTransaction();
+                    }
+                    throw e;
+                }
+
+                int notesCount = realm.where(CapmQA.class).findAll().size();
+                int res = realm.where(CapmQA.class).findAll().size();
+                int res1 = realm.where(CapmQA.class).findAll().size();
+                int res2 = realm.where(CapmQA.class).findAll().size();
+                CapmQA capmQA2 = realm.where(CapmQA.class).equalTo("id", 1).findFirst();
+                CapmQA capmQA3 = realm.where(CapmQA.class).equalTo("id", 5).findFirst();
+
+                Log.d("dataDB", capmQA3.getQuestion());
+                Log.d("dataDB", capmQA3.getA());
+                Log.d("dataDB", capmQA3.getB());
+                Log.d("dataDB", capmQA3.getC());
+                Log.d("dataDB", capmQA3.getD());
+                Log.d("dataDB", capmQA3.getAnswer());
+            }
+
+            @Override
+            public void onFailure(Call<RealmList<CapmQA>> call, Throwable t) {
+                Log.d("fail", "response fail");
+            }
+        });
     }
 }
