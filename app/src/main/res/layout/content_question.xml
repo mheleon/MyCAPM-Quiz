@@ -10,13 +10,14 @@
 
     <TextView
         android:id="@+id/questionText"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         android:text="TextView"
+        android:textSize="18dp"
         app:layout_constraintBottom_toTopOf="@+id/radioGroup"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -25,22 +26,21 @@
 
     <RadioGroup
         android:id="@+id/radioGroup"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toTopOf="@+id/nextButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.04"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/questionText">
 
         <RadioButton
             android:id="@+id/radioButtonA"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:text="RadioButton"
             tools:layout_editor_absoluteX="16dp"
             tools:layout_editor_absoluteY="124dp" />
@@ -48,7 +48,6 @@
         <RadioButton
             android:id="@+id/radioButtonB"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:text="RadioButton"
             tools:layout_editor_absoluteX="27dp"
             tools:layout_editor_absoluteY="181dp" />
@@ -56,7 +55,6 @@
         <RadioButton
             android:id="@+id/radioButtonC"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:text="RadioButton"
             tools:layout_editor_absoluteX="26dp"
             tools:layout_editor_absoluteY="246dp" />
@@ -64,7 +62,6 @@
         <RadioButton
             android:id="@+id/radioButtonD"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:text="RadioButton"
             tools:layout_editor_absoluteX="27dp"
             tools:layout_editor_absoluteY="321dp" />

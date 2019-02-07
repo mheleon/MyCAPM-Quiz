@@ -14,24 +14,26 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:layout_marginBottom="8dp"
-        android:text="Welcome to MyCAPM Quiz"
+        android:text="Welcome to MyCAPM® Quiz"
+        android:textSize="25dp"
         app:layout_constraintBottom_toTopOf="@+id/textView1"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/textView1"
+        app:layout_constraintStart_toStartOf="@+id/textView1"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView1"
-        android:layout_width="254dp"
+        android:layout_width="303dp"
         android:layout_height="122dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras viverra, quam ut placerat semper, augue nibh ullamcorper tortor, ac lobortis"
+        android:gravity="center_horizontal"
+        android:text="Prepare for the Certified Associate in Project Management (CAPM)® Exam by using this app. With this simulator you have online access to more dans 150 realistic CAPM example questions (PMP® PMBOK6). Tap start button to try 10 random questions."
         app:layout_constraintBottom_toTopOf="@+id/startButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/startButton"
+        app:layout_constraintStart_toStartOf="@+id/startButton"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <Button
@@ -45,8 +47,8 @@
         android:onClick="startButton"
         android:text="Start"
         app:layout_constraintBottom_toTopOf="@+id/textView2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/textView2"
+        app:layout_constraintStart_toStartOf="@+id/textView2"
         app:layout_constraintTop_toBottomOf="@+id/textView1" />
 
     <TextView
@@ -54,13 +56,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="12dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Version beta"
+        android:text="Developed by Maykol"
         app:layout_constraintBottom_toTopOf="@+id/textView3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/textView3"
+        app:layout_constraintStart_toStartOf="@+id/textView3"
         app:layout_constraintTop_toBottomOf="@+id/startButton" />
 
     <TextView
@@ -68,10 +70,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Developed by Maykol"
+        android:text="Beta version 1.0"
+        android:textSize="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
