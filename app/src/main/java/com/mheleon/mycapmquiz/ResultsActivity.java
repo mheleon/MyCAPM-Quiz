@@ -13,6 +13,13 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.mheleon.mycapmquiz.models.UserScore;
+
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -42,14 +49,7 @@ public class ResultsActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
 
         Intent i = getIntent();
         questionNumber = i.getExtras().getInt("questionNumber");
@@ -62,7 +62,19 @@ public class ResultsActivity extends AppCompatActivity {
         // Log.d("size user -- answer", Integer.toString(userAnswers.size()));
         Log.d("currentQuest", Integer.toString(questionNumber));
 
+        // Getting and calculating score
         getScore();
+
+        FloatingActionButton fab = findViewById(R.id.fabBtn);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                shareScore();
+                Snackbar.make(view, "Score shared!", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                tryAgainButton();
+            }
+        });
 
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         // mRecyclerView.setHasFixedSize(true);
@@ -130,5 +142,35 @@ public class ResultsActivity extends AppCompatActivity {
     public void tryAgainButton() {
         Intent intent = new Intent(ResultsActivity.this, MainActivity.class);
         startActivity(intent);
+    }
+
+    public void shareScore () {
+        // Firebase
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference mDataBase = database.getReference("scoreTraining");
+
+        mDataBase.child("Anonymous").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    UserScore userScore = dataSnapshot.getValue(UserScore.class);
+                    Log.d("fireDB", userScore.getUser());
+                    Log.d("fireDB", Integer.toString(userScore.getScore() + 5));
+                    // TODO revisar si es mejor actualizar los valores del usuario y sobreescribirlo en firebase
+                    mDataBase.child(userScore.getUser()).child("score").setValue(userScore.getScore() + res);
+                    mDataBase.child(userScore.getUser()).child("shared").setValue(userScore.getShared() + 1);
+
+                } else {
+                    Log.d("fireDB", "no existe");
+                    final UserScore userScore = new UserScore("Anonymous", "France", "Rennes", res, 1, 1);
+                    mDataBase.child(userScore.getUser()).setValue(userScore);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.d("FireBase", "FireBase error: " + databaseError);
+            }
+        });
     }
 }

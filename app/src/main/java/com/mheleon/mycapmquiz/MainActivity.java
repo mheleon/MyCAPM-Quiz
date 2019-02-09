@@ -13,6 +13,13 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.mheleon.mycapmquiz.models.UserScore;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -49,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "Hola!", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
@@ -59,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
         // TODO check if db is updated
         getApiToDB();
 
-        // getRandomQuestions(10);
     }
 
     @Override
@@ -89,7 +95,9 @@ public class MainActivity extends AppCompatActivity {
      */
     @OnClick(R.id.startButton)
     public void startQuiz() {
-        Toast.makeText(this, "Starting...", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Starting training...", Toast.LENGTH_SHORT).show();
+
+        createUser();
         // Intent intent = new Intent(MainActivity.this, AllQuestionsActivity.class);
         Intent intent = new Intent(MainActivity.this, QuestionActivity.class);
         intent.putExtra("questionNumber", 1);
@@ -216,6 +224,33 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<RealmList<CapmQA>> call, Throwable t) {
                 Log.d("fail", "response fail");
+            }
+        });
+    }
+
+    public void createUser () {
+        // Firebase
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        final DatabaseReference mDataBase = database.getReference("scoreTraining");
+
+        mDataBase.child("Anonymous").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    Log.d("fireDB", "Existing user");
+                    UserScore userScore = dataSnapshot.getValue(UserScore.class);
+                    mDataBase.child(userScore.getUser()).child("counter").setValue(userScore.getCounter() + 1);
+                } else {
+                    Log.d("fireDB", "New user");
+                    mDataBase.child("Anonymous").child("user").setValue("Anonymous");
+                    mDataBase.child("Anonymous").child("counter").setValue(1);
+                    mDataBase.child("Anonymous").child("shared").setValue(0);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("FireBase", "FireBase error: " + databaseError);
             }
         });
     }

@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "841188110196",
+    "firebase_url": "https://mycapm-quiz.firebaseio.com",
+    "project_id": "mycapm-quiz",
+    "storage_bucket": "mycapm-quiz.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:841188110196:android:fddcf04660fed3d1",
+        "android_client_info": {
+          "package_name": "com.mheleon.mycapmquiz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "841188110196-gm1de2j2sktp9ukskctb184mv1etrkig.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfS8m0S8VsLRflekEZGFNgQzTA67MQvl0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
