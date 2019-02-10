@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -18,6 +19,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.mheleon.mycapmquiz.models.User;
 import com.mheleon.mycapmquiz.models.UserScore;
 
 import java.util.ArrayList;
@@ -40,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
     int nbQuestions = 10;
     RealmList<CapmQA> resource = new RealmList<>();
 
+    @BindView(R.id.nickname) TextView nickname;
     @BindView(R.id.startButton) Button startButton;
 
     @Override
@@ -66,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         // TODO check if db is updated
         getApiToDB();
 
+        getNicknameField();
     }
 
     @Override
@@ -95,10 +99,29 @@ public class MainActivity extends AppCompatActivity {
      */
     @OnClick(R.id.startButton)
     public void startQuiz() {
+
+        if (nickname.getText().length() < 1) {
+            Toast.makeText(this, "Please enter a nickname before continue", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if (!nickname.getText().toString().matches("[a-zA-Z0-9]+")) {
+            Toast.makeText(this, "Please enter an alphanumeric nickname", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         Toast.makeText(this, "Starting training...", Toast.LENGTH_SHORT).show();
 
         createUser();
-        // Intent intent = new Intent(MainActivity.this, AllQuestionsActivity.class);
+
+        // Save nickname in local DB
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        realm.delete(User.class);
+        User user = realm.createObject(User.class);
+        user.setNickname(nickname.getText().toString());
+        realm.commitTransaction();
+
         Intent intent = new Intent(MainActivity.this, QuestionActivity.class);
         intent.putExtra("questionNumber", 1);
 
@@ -113,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Method to get list of index random questions
      *
-     * @param nbQuestions
+     * @param nbQuestions number of questions
      * @return Index list of questions
      */
     private ArrayList<Integer> getRandomQuestions(int nbQuestions) {
@@ -228,12 +251,14 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Create anonymous user in Firebase
+     */
     public void createUser () {
-        // Firebase
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference mDataBase = database.getReference("scoreTraining");
 
-        mDataBase.child("Anonymous").addListenerForSingleValueEvent(new ValueEventListener() {
+        mDataBase.child(nickname.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
@@ -242,9 +267,8 @@ public class MainActivity extends AppCompatActivity {
                     mDataBase.child(userScore.getUser()).child("counter").setValue(userScore.getCounter() + 1);
                 } else {
                     Log.d("fireDB", "New user");
-                    mDataBase.child("Anonymous").child("user").setValue("Anonymous");
-                    mDataBase.child("Anonymous").child("counter").setValue(1);
-                    mDataBase.child("Anonymous").child("shared").setValue(0);
+                    final UserScore userScore = new UserScore(nickname.getText().toString(), "", "", 0, 1, 0);
+                    mDataBase.child(userScore.getUser()).setValue(userScore);
                 }
             }
 
@@ -253,5 +277,15 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("FireBase", "FireBase error: " + databaseError);
             }
         });
+    }
+
+    /**
+     * Method to get user from local DB if exists
+     */
+    public void getNicknameField () {
+        Realm realm = Realm.getDefaultInstance();
+        User user = realm.where(User.class).findFirst();
+        if (user != null)
+            nickname.setText(user.getNickname());
     }
 }

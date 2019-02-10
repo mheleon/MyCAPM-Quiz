@@ -12,7 +12,7 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:text="Welcome to MyCAPM® Quiz"
         android:textSize="25dp"
@@ -24,16 +24,14 @@
     <TextView
         android:id="@+id/textView1"
         android:layout_width="303dp"
-        android:layout_height="122dp"
-        android:layout_marginStart="8dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:gravity="center_horizontal"
-        android:text="Prepare for the Certified Associate in Project Management (CAPM)® Exam by using this app. With this simulator you have online access to more dans 150 realistic CAPM example questions (PMP® PMBOK6). Tap start button to try 10 random questions."
-        app:layout_constraintBottom_toTopOf="@+id/startButton"
-        app:layout_constraintEnd_toEndOf="@+id/startButton"
-        app:layout_constraintStart_toStartOf="@+id/startButton"
+        android:text="Prepare for the Certified Associate in Project Management (CAPM®) Exam by using this app. With this simulator you have online access to more dans 150 realistic CAPM® example questions (PMP® PMBOK6). Enter a nickname and tap start button to try 10 random questions."
+        app:layout_constraintBottom_toTopOf="@+id/nickname"
+        app:layout_constraintEnd_toEndOf="@+id/nickname"
+        app:layout_constraintStart_toStartOf="@+id/nickname"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <Button
@@ -43,20 +41,20 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="8dp"
         android:onClick="startButton"
         android:text="Start"
         app:layout_constraintBottom_toTopOf="@+id/textView2"
         app:layout_constraintEnd_toEndOf="@+id/textView2"
         app:layout_constraintStart_toStartOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/textView1" />
+        app:layout_constraintTop_toBottomOf="@+id/nickname" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text="Developed by Maykol"
@@ -72,12 +70,27 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="4dp"
         android:text="Beta version 1.0"
         android:textSize="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+    <EditText
+        android:id="@+id/nickname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:ems="10"
+        android:gravity="center_horizontal"
+        android:hint="nickname"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/startButton"
+        app:layout_constraintEnd_toEndOf="@+id/startButton"
+        app:layout_constraintStart_toStartOf="@+id/startButton"
+        app:layout_constraintTop_toBottomOf="@+id/textView1" />
 
 </android.support.constraint.ConstraintLayout>

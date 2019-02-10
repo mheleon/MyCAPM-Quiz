@@ -12,12 +12,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.mheleon.mycapmquiz.models.User;
 import com.mheleon.mycapmquiz.models.UserScore;
 
 import java.util.ArrayList;
@@ -65,13 +67,13 @@ public class ResultsActivity extends AppCompatActivity {
         // Getting and calculating score
         getScore();
 
+
+
         FloatingActionButton fab = findViewById(R.id.fabBtn);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 shareScore();
-                Snackbar.make(view, "Score shared!", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
                 tryAgainButton();
             }
         });
@@ -145,22 +147,28 @@ public class ResultsActivity extends AppCompatActivity {
     }
 
     public void shareScore () {
+        // Get nickname from local DB
+        Realm realm = Realm.getDefaultInstance();
+        User user = realm.where(User.class).findFirst();
+        Log.d("nicknameDB", user.getNickname());
+
         // Firebase
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference mDataBase = database.getReference("scoreTraining");
-
-        mDataBase.child("Anonymous").addListenerForSingleValueEvent(new ValueEventListener() {
+        
+        mDataBase.child(user.getNickname()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     UserScore userScore = dataSnapshot.getValue(UserScore.class);
                     Log.d("fireDB", userScore.getUser());
-                    Log.d("fireDB", Integer.toString(userScore.getScore() + 5));
+                    Log.d("fireDB", Integer.toString(userScore.getScore() + res));
                     // TODO revisar si es mejor actualizar los valores del usuario y sobreescribirlo en firebase
                     mDataBase.child(userScore.getUser()).child("score").setValue(userScore.getScore() + res);
                     mDataBase.child(userScore.getUser()).child("shared").setValue(userScore.getShared() + 1);
 
                 } else {
+                    // TODO delete (user always exists here)
                     Log.d("fireDB", "no existe");
                     final UserScore userScore = new UserScore("Anonymous", "France", "Rennes", res, 1, 1);
                     mDataBase.child(userScore.getUser()).setValue(userScore);
@@ -172,5 +180,6 @@ public class ResultsActivity extends AppCompatActivity {
                 Log.d("FireBase", "FireBase error: " + databaseError);
             }
         });
+        Toast.makeText(this, "Score shared!", Toast.LENGTH_SHORT).show();
     }
 }
