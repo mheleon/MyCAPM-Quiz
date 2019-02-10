@@ -8,7 +8,7 @@ import retrofit2.http.GET;
 
 public interface CapmQAService {
 
-    String API_ROUTE = "/api/capm/capmqa";
+    String API_ROUTE = "/api/pmp/capmqa";
 
     @GET(API_ROUTE)
     Call<RealmList<CapmQA>> getCapmQA();
