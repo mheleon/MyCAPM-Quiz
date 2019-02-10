@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">MyCAPM Quiz</string>
     <string name="action_settings">Settings</string>
+    <string name="action_update">Update questions</string>
+    <string name="action_close">Close</string>
     <string name="title_activity_all_questions">Questions</string>
     <string name="title_activity_question">QuestionActivity</string>
     <string name="title_activity_results">Results</string>

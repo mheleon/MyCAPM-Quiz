@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     int nbQuestions = 10;
     RealmList<CapmQA> resource = new RealmList<>();
 
-    @BindView(R.id.nickname) TextView nickname;
+    @BindView(R.id.nickname) EditText nickname;
     @BindView(R.id.startButton) Button startButton;
 
     @Override
@@ -66,8 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
         Realm.init(getApplicationContext());
 
-        // TODO check if db is updated
-        getApiToDB();
+        checkDB();
 
         getNicknameField();
     }
@@ -88,6 +88,17 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            return true;
+        }
+        if (id == R.id.action_update) {
+            getApiToDB();
+            Toast.makeText(getApplicationContext(), "Quiz updated!", Toast.LENGTH_SHORT).show();
+            return true;
+        }
+        if (id == R.id.action_close) {
+            Toast.makeText(getApplicationContext(), "Bye!", Toast.LENGTH_SHORT).show();
+            finish();
+            System.exit(0);
             return true;
         }
 
@@ -285,7 +296,23 @@ public class MainActivity extends AppCompatActivity {
     public void getNicknameField () {
         Realm realm = Realm.getDefaultInstance();
         User user = realm.where(User.class).findFirst();
-        if (user != null)
+        if (user != null) {
             nickname.setText(user.getNickname());
+            nickname.setSelection(nickname.getText().length());
+        }
+
+    }
+
+    /**
+     * Method that checks if there are questions in local DB, if false get them from API
+     */
+    public void checkDB () {
+        Realm realm = Realm.getDefaultInstance();
+        int nbQuestionsDB = realm.where(CapmQA.class).findAll().size();
+        if (nbQuestionsDB <= 0) {
+            Log.d("checkDB", "no datos en db");
+            getApiToDB();
+        }
+
     }
 }
