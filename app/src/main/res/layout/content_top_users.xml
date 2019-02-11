@@ -16,7 +16,6 @@
         android:layout_marginStart="176dp"
         android:layout_marginTop="92dp"
         android:gravity="center|center_horizontal"
-        android:text="TextView"
         android:textSize="20dp"
         app:layout_constraintBottom_toTopOf="@+id/score1"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,7 +28,6 @@
         android:layout_marginStart="80dp"
         android:layout_marginTop="135dp"
         android:gravity="center|center_horizontal"
-        android:text="TextView"
         android:textSize="20dp"
         app:layout_constraintBottom_toTopOf="@+id/score2"
         app:layout_constraintStart_toStartOf="parent"
@@ -42,7 +40,6 @@
         android:layout_marginStart="270dp"
         android:layout_marginTop="150dp"
         android:gravity="center|center_horizontal"
-        android:text="TextView"
         android:textSize="20dp"
         app:layout_constraintBottom_toTopOf="@+id/score3"
         app:layout_constraintStart_toStartOf="parent"
@@ -54,7 +51,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="176dp"
         android:gravity="center|center_horizontal"
-        android:text="TextView"
         app:layout_constraintBottom_toTopOf="@+id/imageView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user1" />
@@ -65,7 +61,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="80dp"
         android:gravity="center|center_horizontal"
-        android:text="TextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user2" />
 
@@ -75,7 +70,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="270dp"
         android:gravity="center|center_horizontal"
-        android:text="TextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/user3" />
 

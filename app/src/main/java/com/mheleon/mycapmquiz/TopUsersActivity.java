@@ -1,12 +1,9 @@
 package com.mheleon.mycapmquiz;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -38,21 +35,12 @@ public class TopUsersActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(TopUsersActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
-        });
-
         ButterKnife.bind(this);
 
         getTopUsers();
     }
 
-    public void getTopUsers () {
+    public void getTopUsers() {
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference mDataBase = database.getReference("scoreTraining");
@@ -64,7 +52,7 @@ public class TopUsersActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 ArrayList<UserScore> topUsers = new ArrayList<>();
-                for (DataSnapshot userSnapshot: dataSnapshot.getChildren()) {
+                for (DataSnapshot userSnapshot : dataSnapshot.getChildren()) {
                     UserScore userScore = userSnapshot.getValue(UserScore.class);
                     topUsers.add(userScore);
                 }
@@ -78,9 +66,7 @@ public class TopUsersActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
                 Log.w("error", "loadPost:onCancelled", databaseError.toException());
-                // ...
             }
         });
     }

@@ -9,16 +9,16 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.mheleon.mycapmquiz.models.CapmQA;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import io.realm.Realm;
 
@@ -31,19 +31,11 @@ public class QuestionActivity extends AppCompatActivity {
     @BindView(R.id.radioButtonD) TextView radioButtonD;
     @BindView(R.id.nextButton) Button nextButton;
 
-    // private RadioGroup radioGroup = findViewById(R.id.radioGroup);
-
-    private RadioGroup radioGroup;
-    /*
-    private RadioButton bA = findViewById(R.id.radioButtonA);
-    private RadioButton bB = findViewById(R.id.radioButtonB);
-    private RadioButton bC = findViewById(R.id.radioButtonC);
-    private RadioButton bD = findViewById(R.id.radioButtonD);
-    */
-
-    int questionNumber; // Corresponde al numero de la pregunta, no al index del arreglo
+    // Number of the question, not the array index
+    int questionNumber;
     ArrayList<String> userAnswers = new ArrayList<>();
     ArrayList<Integer> questionsIndex;
+    private RadioGroup radioGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,10 +52,13 @@ public class QuestionActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+
+                Intent intent = new Intent(QuestionActivity.this, MainActivity.class);
+                startActivity(intent);
             }
         });
 
-        radioGroup = (RadioGroup) findViewById(R.id.radioGroup);
+        radioGroup = findViewById(R.id.radioGroup);
 
         Intent i = getIntent();
         questionNumber = i.getExtras().getInt("questionNumber");
@@ -73,21 +68,18 @@ public class QuestionActivity extends AppCompatActivity {
 
         // Get user's answers from last activity
         userAnswers = i.getStringArrayListExtra("userAnswers");
-        // Log.d("size user -- answer", Integer.toString(userAnswers.size()));
-        Log.d("currentQuest", Integer.toString(questionNumber));
 
         setTitle("Question " + questionNumber);
         setFields();
     }
 
+    /**
+     * Method to set all fields
+     */
     public void setFields() {
 
-        Log.d("nbQuestion real", Integer.toString(questionsIndex.get(questionNumber - 1)));
         Realm realm = Realm.getDefaultInstance();
         CapmQA capmQA = realm.where(CapmQA.class).equalTo("id", questionsIndex.get(questionNumber - 1)).findFirst();
-        // int nbQuestionsDB = realm.where(CapmQA.class).findAll().size();
-        // Log.d("size", Integer.toString(nbQuestionsDB));
-
 
         questionText.setText(capmQA.getQuestion());
         radioButtonA.setText("A. " + capmQA.getA());
@@ -99,20 +91,19 @@ public class QuestionActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Method that manages next button
+     */
     @OnClick(R.id.nextButton)
     public void submit() {
-        // Toast.makeText(this, "You win!", LENGTH_SHORT).show();
-
         int selectedId = radioGroup.getCheckedRadioButtonId();
 
         String buttonSelected;
 
-        Log.d("questionNumber", Integer.toString(questionNumber));
-
         // find which radioButton is checked by id
         if (selectedId == R.id.radioButtonA) {
             buttonSelected = "A";
-            userAnswers.set(questionNumber -1 , "a");
+            userAnswers.set(questionNumber - 1, "a");
         } else if (selectedId == R.id.radioButtonB) {
             buttonSelected = "B";
             userAnswers.set(questionNumber - 1, "b");
@@ -122,14 +113,10 @@ public class QuestionActivity extends AppCompatActivity {
         } else if (selectedId == R.id.radioButtonD) {
             buttonSelected = "D";
             userAnswers.set(questionNumber - 1, "d");
-        }else {
-            // buttonSelected = "Answer the question before continue";
+        } else {
             Toast.makeText(getApplicationContext(), "Answer the question before continue", Toast.LENGTH_SHORT).show();
             return;
         }
-
-        // Toast.makeText(getApplicationContext(), "Answer :  " + buttonSelected, Toast.LENGTH_SHORT).show();
-        Toast.makeText(getApplicationContext(), "Answer :  " + userAnswers.get(questionNumber -1), Toast.LENGTH_SHORT).show();
 
         if (questionNumber < 10) {
             Intent intent = new Intent(QuestionActivity.this, QuestionActivity.class);
@@ -138,13 +125,8 @@ public class QuestionActivity extends AppCompatActivity {
             intent.putStringArrayListExtra("userAnswers", userAnswers);
             intent.putIntegerArrayListExtra("questionsIndex", questionsIndex);
             startActivity(intent);
-
         } else {
-            Log.d("nbPregunta1-10", Integer.toString(questionNumber));
-            Toast.makeText(getApplicationContext(), "Result...", Toast.LENGTH_SHORT).show();
-
             Intent intent = new Intent(QuestionActivity.this, ResultsActivity.class);
-
             intent.putExtra("questionNumber", questionNumber + 1);
             intent.putStringArrayListExtra("userAnswers", userAnswers);
             intent.putIntegerArrayListExtra("questionsIndex", questionsIndex);

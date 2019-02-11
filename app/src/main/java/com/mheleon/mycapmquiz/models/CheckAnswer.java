@@ -1,4 +1,4 @@
-package com.mheleon.mycapmquiz;
+package com.mheleon.mycapmquiz.models;
 
 public class CheckAnswer {
     private String nbQuestion;

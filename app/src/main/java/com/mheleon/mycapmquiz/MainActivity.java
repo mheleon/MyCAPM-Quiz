@@ -12,7 +12,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -20,12 +19,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.mheleon.mycapmquiz.controllers.CapmQAService;
+import com.mheleon.mycapmquiz.models.CapmQA;
 import com.mheleon.mycapmquiz.models.User;
 import com.mheleon.mycapmquiz.models.UserScore;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -72,6 +71,12 @@ public class MainActivity extends AppCompatActivity {
         getNicknameField();
     }
 
+    /**
+     * Method to add items to the action bar
+     *
+     * @param menu Menu
+     * @return True if success
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -79,14 +84,16 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Handle action bar item
+     *
+     * @param item Menu item
+     * @return boolean
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             Intent intent = new Intent(MainActivity.this, TopUsersActivity.class);
             startActivity(intent);
@@ -139,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
         intent.putExtra("questionNumber", 1);
 
         ArrayList<String> userAnswers = new ArrayList<>();
-        for(int i = 0; i < nbQuestions; i ++ ) userAnswers.add("x");
+        for (int i = 0; i < nbQuestions; i++) userAnswers.add("x");
         intent.putStringArrayListExtra("userAnswers", userAnswers);
 
         intent.putIntegerArrayListExtra("questionsIndex", getRandomQuestions(nbQuestions));
@@ -157,54 +164,13 @@ public class MainActivity extends AppCompatActivity {
 
         Realm realm = Realm.getDefaultInstance();
         int nbQuestionsDB = realm.where(CapmQA.class).findAll().size();
-        Log.d("size", Integer.toString(nbQuestionsDB));
-        for(int i = 0; i < nbQuestions; i++) {
+        for (int i = 0; i < nbQuestions; i++) {
             // questionsIndex.add(response.body().get((int) ((Math.random() * response.body().size()) - 1)));
             // nbQuestionsDB is the maximum and the 1 is the minimum.
             int rand = (int) (Math.random() * nbQuestionsDB + 1);
-            Log.d("rand", Integer.toString(rand));
             questionsIndex.add(rand);
         }
         return questionsIndex;
-    }
-
-    private void testDB() {
-
-        Realm realm = Realm.getDefaultInstance();
-        realm.beginTransaction();
-        realm.delete(CapmQA.class);
-        realm.commitTransaction();
-
-        // realm.deleteAll();
-
-// All writes are wrapped in a transaction
-// to facilitate safe multi threading
-
-        realm.beginTransaction();
-        try {
-
-            CapmQA capmQA = realm.createObject(CapmQA.class, 1);
-            capmQA.setId_chapter(1);
-            capmQA.setQuestion("primera pregunta");
-            capmQA.setA("preguta a");
-            capmQA.setB("preguta a");
-            capmQA.setC("preguta a");
-            capmQA.setD("preguta a");
-            capmQA.setAnswer("b");
-
-            // final CapmQA managedDog = realm.copyToRealm(capmQA);
-            // Add a question
-            realm.commitTransaction();
-        } catch (Throwable e) {
-            if (realm.isInTransaction()) {
-                realm.cancelTransaction();
-            }
-            throw e;
-        }
-
-        CapmQA capmQA2 = realm.where(CapmQA.class).equalTo("id", 1).findFirst();
-        Log.d("dataB", capmQA2.getQuestion());
-
     }
 
     /**
@@ -226,7 +192,6 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<RealmList<CapmQA>>() {
             @Override
             public void onResponse(Call<RealmList<CapmQA>> call, Response<RealmList<CapmQA>> response) {
-
                 resource = response.body();
                 Realm realm = Realm.getDefaultInstance();
                 try {
@@ -241,20 +206,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                     throw e;
                 }
-
-                int notesCount = realm.where(CapmQA.class).findAll().size();
-                int res = realm.where(CapmQA.class).findAll().size();
-                int res1 = realm.where(CapmQA.class).findAll().size();
-                int res2 = realm.where(CapmQA.class).findAll().size();
-                CapmQA capmQA2 = realm.where(CapmQA.class).equalTo("id", 1).findFirst();
-                CapmQA capmQA3 = realm.where(CapmQA.class).equalTo("id", 5).findFirst();
-
-                Log.d("dataDB", capmQA3.getQuestion());
-                Log.d("dataDB", capmQA3.getA());
-                Log.d("dataDB", capmQA3.getB());
-                Log.d("dataDB", capmQA3.getC());
-                Log.d("dataDB", capmQA3.getD());
-                Log.d("dataDB", capmQA3.getAnswer());
             }
 
             @Override
@@ -267,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Create anonymous user in Firebase
      */
-    public void createUser () {
+    public void createUser() {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         final DatabaseReference mDataBase = database.getReference("scoreTraining");
 
@@ -275,11 +226,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    Log.d("fireDB", "Existing user");
                     UserScore userScore = dataSnapshot.getValue(UserScore.class);
                     mDataBase.child(userScore.getUser()).child("counter").setValue(userScore.getCounter() + 1);
                 } else {
-                    Log.d("fireDB", "New user");
                     final UserScore userScore = new UserScore(nickname.getText().toString(), "", "", 0, 1, 0);
                     mDataBase.child(userScore.getUser()).setValue(userScore);
                 }
@@ -295,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Method to get user from local DB if exists
      */
-    public void getNicknameField () {
+    public void getNicknameField() {
         Realm realm = Realm.getDefaultInstance();
         User user = realm.where(User.class).findFirst();
         if (user != null) {
@@ -308,11 +257,10 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Method that checks if there are questions in local DB, if false get them from API
      */
-    public void checkDB () {
+    public void checkDB() {
         Realm realm = Realm.getDefaultInstance();
         int nbQuestionsDB = realm.where(CapmQA.class).findAll().size();
         if (nbQuestionsDB <= 0) {
-            Log.d("checkDB", "no datos en db");
             getApiToDB();
         }
 

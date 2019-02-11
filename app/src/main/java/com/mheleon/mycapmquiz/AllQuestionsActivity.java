@@ -1,36 +1,27 @@
 package com.mheleon.mycapmquiz;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
+import com.mheleon.mycapmquiz.models.CapmQA;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.OnClick;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class AllQuestionsActivity extends AppCompatActivity {
     ListView listView;
     String[] q = new String[] {"Question 1", "Question 2", "Question 3", "Question 4", "Question 5", "Question 6", "Question 7", "Question 8", "Question 9", "Question 10"};
 
-    // ListView list;
     ArrayList<String> titles = new ArrayList<>();
     ArrayAdapter arrayAdapter;
 
@@ -70,12 +61,6 @@ public class AllQuestionsActivity extends AppCompatActivity {
 
 
         arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, titles);
-        // list = findViewById(R.id.list);
-        // list.setAdapter(arrayAdapter);
-
-        // getQuestionAnswers();
-
-
 
     }
 

@@ -1,4 +1,4 @@
-package com.mheleon.mycapmquiz;
+package com.mheleon.mycapmquiz.models;
 
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
