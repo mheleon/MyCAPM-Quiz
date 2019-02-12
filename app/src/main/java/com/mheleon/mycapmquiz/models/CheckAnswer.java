@@ -5,12 +5,17 @@ public class CheckAnswer {
     private String question;
     private String userAnswer;
     private String correctAnswer;
+    private String explanation;
 
-    public CheckAnswer(String nbQuestion, String question, String userAnswer, String correctAnswer) {
+    public CheckAnswer(String nbQuestion, String question, String userAnswer, String correctAnswer, String explanation) {
         this.nbQuestion = nbQuestion;
         this.question = question;
         this.userAnswer = userAnswer;
         this.correctAnswer = correctAnswer;
+        this.explanation = explanation;
+    }
+
+    public CheckAnswer() {
     }
 
     public String getNbQuestion() {
@@ -43,5 +48,13 @@ public class CheckAnswer {
 
     public void setCorrectAnswer(String correctAnswer) {
         this.correctAnswer = correctAnswer;
+    }
+
+    public String getExplanation() {
+        return explanation;
+    }
+
+    public void setExplanation(String explanation) {
+        this.explanation = explanation;
     }
 }

@@ -7,4 +7,7 @@
     <string name="title_activity_question">QuestionActivity</string>
     <string name="title_activity_results">Results</string>
     <string name="title_activity_top_users">Top users score</string>
+    <string name="result_your_answer"><u>Your answer:</u></string>
+    <string name="result_correct_answer"><u>Correct answer:</u></string>
+    <string name="result_explanation"><u>Explanation</u></string>
 </resources>

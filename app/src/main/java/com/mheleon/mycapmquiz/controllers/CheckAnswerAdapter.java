@@ -30,6 +30,7 @@ public class CheckAnswerAdapter extends RecyclerView.Adapter<CheckAnswerAdapter.
         holder.question.setText(checkAnswer.getQuestion());
         holder.userAnswer.setText(checkAnswer.getUserAnswer());
         holder.correctAnswer.setText(checkAnswer.getCorrectAnswer());
+        holder.explanation.setText(checkAnswer.getExplanation());
     }
 
     /**
@@ -55,6 +56,7 @@ public class CheckAnswerAdapter extends RecyclerView.Adapter<CheckAnswerAdapter.
         public TextView question;
         public TextView userAnswer;
         public TextView correctAnswer;
+        public TextView explanation;
 
         public MyViewHolder(View view) {
             super(view);
@@ -62,6 +64,7 @@ public class CheckAnswerAdapter extends RecyclerView.Adapter<CheckAnswerAdapter.
             question = (TextView) view.findViewById(R.id.question);
             userAnswer = (TextView) view.findViewById(R.id.userAnswer);
             correctAnswer = (TextView) view.findViewById(R.id.correctAnswer);
+            explanation = (TextView) view.findViewById(R.id.explanation);
         }
     }
 }

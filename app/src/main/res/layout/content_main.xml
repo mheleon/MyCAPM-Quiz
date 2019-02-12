@@ -15,6 +15,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:text="Welcome to MyCAPM® Quiz"
+        android:textAllCaps="false"
         android:textSize="25dp"
         app:layout_constraintBottom_toTopOf="@+id/textView1"
         app:layout_constraintEnd_toEndOf="@+id/textView1"

@@ -14,8 +14,9 @@ public class CapmQA extends RealmObject {
     private String c;
     private String d;
     private String answer;
+    private String explanation;
 
-    public CapmQA(long id, long id_chapter, String question, String a, String b, String c, String d, String answer) {
+    public CapmQA(long id, long id_chapter, String question, String a, String b, String c, String d, String answer, String explanation) {
         this.id = id;
         this.id_chapter = id_chapter;
         this.question = question;
@@ -24,9 +25,11 @@ public class CapmQA extends RealmObject {
         this.c = c;
         this.d = d;
         this.answer = answer;
+        this.explanation = explanation;
     }
 
-    public CapmQA() {}
+    public CapmQA() {
+    }
 
     public long getId() {
         return id;
@@ -92,4 +95,11 @@ public class CapmQA extends RealmObject {
         this.answer = answer;
     }
 
+    public String getExplanation() {
+        return explanation;
+    }
+
+    public void setExplanation(String explanation) {
+        this.explanation = explanation;
+    }
 }

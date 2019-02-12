@@ -97,7 +97,7 @@ public class ResultsActivity extends AppCompatActivity {
             } else {
                 results.add(false);
             }
-            answerList.add(new CheckAnswer("Question " + Integer.toString(i+1) + ".", capmQA.getQuestion(), optionToAnswerText(capmQA, userAnswers.get(i)), optionToAnswerText(capmQA, capmQA.getAnswer())));
+            answerList.add(new CheckAnswer("Question " + Integer.toString(i+1) + ".", capmQA.getQuestion(), optionToAnswerText(capmQA, userAnswers.get(i)), optionToAnswerText(capmQA, capmQA.getAnswer()), capmQA.getExplanation()));
 
         }
         realm.close();
