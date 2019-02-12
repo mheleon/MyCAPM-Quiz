@@ -1,6 +1,9 @@
 package com.mheleon.mycapmquiz;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -64,11 +67,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Realm.init(getApplicationContext());
+        if (isNetworkAvailable()) {
+            Realm.init(getApplicationContext());
 
-        checkDB();
+            checkDB();
 
-        getNicknameField();
+            getNicknameField();
+        } else {
+            Toast.makeText(getApplicationContext(), "Check your internet connection", Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**
@@ -95,11 +102,19 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id == R.id.action_settings) {
+            if (!isNetworkAvailable()) {
+                Toast.makeText(getApplicationContext(), "Check your internet connection", Toast.LENGTH_SHORT).show();
+                return false;
+            }
             Intent intent = new Intent(MainActivity.this, TopUsersActivity.class);
             startActivity(intent);
             return true;
         }
         if (id == R.id.action_update) {
+            if (!isNetworkAvailable()) {
+                Toast.makeText(getApplicationContext(), "Check your internet connection", Toast.LENGTH_SHORT).show();
+                return false;
+            }
             getApiToDB();
             Toast.makeText(getApplicationContext(), "Quiz updated!", Toast.LENGTH_SHORT).show();
             return true;
@@ -119,6 +134,11 @@ public class MainActivity extends AppCompatActivity {
      */
     @OnClick(R.id.startButton)
     public void startQuiz() {
+
+        if (!isNetworkAvailable()) {
+            Toast.makeText(getApplicationContext(), "Check your internet connection", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         if (nickname.getText().length() < 1) {
             Toast.makeText(this, "Please enter a nickname before continue", Toast.LENGTH_SHORT).show();
@@ -264,5 +284,16 @@ public class MainActivity extends AppCompatActivity {
             getApiToDB();
         }
 
+    }
+
+    /**
+     * Detect whether there is an Internet connection available
+     * @return true if available
+     */
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 }
