@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="350dp"
+    android:layout_height="475dp"
+    android:background="@color/colorPrimaryDark"
+    android:padding="5dp"
+    android:layout_gravity="center">
+    <TextView
+        android:id="@+id/txtclose"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:text="X"
+        android:textColor="@color/common_google_signin_btn_text_dark_pressed"
+        android:textStyle="bold"
+        android:layout_gravity="end"
+        android:gravity="center"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Credits"
+            android:textStyle="bold"
+            android:textSize="19dp"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="40dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="M2 MIAGE - UR1"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MMM 2018/2019"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="3dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Developed by"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Maykol HERNÁNDEZ LEÓN"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="3dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Logo designed by"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Diana Carolina SILVA ZÁRATE"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="3dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Questions taken from CAPM Training"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="IGR-IAE - M. Martial BELLEC"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="3dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="PMP and CAPM are registered marks"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="of the Project Management Institute, Inc."
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="3dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="This is a student project, non-commercial use"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="© 2019 - All rights reserved"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"/>
+    </LinearLayout>
+</LinearLayout>
