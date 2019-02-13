@@ -73,7 +73,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Questions taken from CAPM Training"
+            android:text="Questions taken from CAPM® Training"
             android:textColor="@color/common_google_signin_btn_text_dark_default"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="10dp"/>

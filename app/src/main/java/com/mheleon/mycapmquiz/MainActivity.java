@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_top_scores) {
             if (!isNetworkAvailable()) {
                 Toast.makeText(getApplicationContext(), "Check your internet connection", Toast.LENGTH_SHORT).show();
                 return false;
@@ -125,12 +125,6 @@ public class MainActivity extends AppCompatActivity {
             }
             getApiToDB();
             Toast.makeText(getApplicationContext(), "Quiz updated!", Toast.LENGTH_SHORT).show();
-            return true;
-        }
-        if (id == R.id.action_close) {
-            Toast.makeText(getApplicationContext(), "Bye!", Toast.LENGTH_SHORT).show();
-            finish();
-            System.exit(0);
             return true;
         }
 
