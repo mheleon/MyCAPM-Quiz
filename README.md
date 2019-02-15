@@ -19,7 +19,9 @@ This project use the following tool:
 
 ## Functional Architecture
 
-![Drag Racing](MyCAPM Quiz.png)
+<img src="MyCAPM Quiz.png"
+     alt="Markdown Monster icon"
+     style="float: left; margin-right: 10px;" />
 
 ## Author
 
